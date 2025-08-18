@@ -1,5 +1,11 @@
+<script setup>
+import GuestLayout from '../Layouts/GuestLayout.vue';
+</script>
+
 <template>
-    <div> 
-        <h1>Welcome to the Home Page</h1>
-    </div>
+    <GuestLayout>
+        <div> 
+            <h1>Welcome to the Home Page</h1>
+        </div>
+    </GuestLayout>
 </template>
