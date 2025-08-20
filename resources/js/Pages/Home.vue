@@ -4,7 +4,11 @@ import GuestLayout from '../Layouts/GuestLayout.vue';
 
 <template>
     <GuestLayout>
+        <Head title="Home"></Head>
         <div> 
+            <li>
+                <Link href="/">Home</Link>
+            </li>
             <h1>Welcome to the Home Page</h1>
         </div>
     </GuestLayout>
