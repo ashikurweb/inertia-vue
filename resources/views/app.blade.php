@@ -14,7 +14,7 @@
     @inertiaHead
     @routes
 </head>
-<body>
+<body class="bg-[#f8fafc] overflow-x-hidden">
     @inertia
 </body>
 </html>

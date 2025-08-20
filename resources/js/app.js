@@ -1,5 +1,8 @@
 import './bootstrap';
 import '../css/app.css';
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
 
 import { createApp, h } from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3'
