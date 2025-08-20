@@ -6,10 +6,7 @@ import GuestLayout from '../Layouts/GuestLayout.vue';
     <GuestLayout>
         <Head title="Home"></Head>
         <div> 
-            <li>
-                <Link href="/">Home</Link>
-            </li>
-            <h1>Welcome to the Home Page</h1>
+            <h1>{{ $page.props.user }}</h1>
         </div>
     </GuestLayout>
 </template>

@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     @vite(['resources/js/app.js'])
     @inertiaHead
+    @routes
 </head>
 <body>
     @inertia
