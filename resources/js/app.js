@@ -3,6 +3,7 @@ import '../css/app.css';
 
 import { createApp, h } from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3'
+import { Icon } from "@iconify/vue";
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 createInertiaApp({
@@ -15,6 +16,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue, Ziggy)
+      .component('Icon', Icon)
       .component('Link', Link)
       .component('Head', Head)
       .mount(el)
