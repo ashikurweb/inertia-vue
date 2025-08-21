@@ -1,16 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
 import { 
-  MenuOutlined, 
-  UserOutlined, 
-  DownOutlined,
   PlayCircleOutlined,
-  RocketOutlined,
-  StarOutlined,
-  ThunderboltOutlined
+  RocketOutlined
 } from '@ant-design/icons-vue'
-import { Button, Dropdown, Menu, MenuItem, Drawer } from 'ant-design-vue'
 
 // Props
 const props = defineProps({
@@ -19,53 +12,6 @@ const props = defineProps({
     default: null
   }
 })
-
-// Reactive state
-const mobileMenuVisible = ref(false)
-const isScrolled = ref(false)
-
-// Navigation items
-const navItems = [
-  { label: 'Home', href: '/', active: true },
-  { label: 'Blog', href: '/blog' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' }
-]
-
-// Account dropdown menu items
-const accountMenuItems = props.user ? [
-  { key: 'dashboard', label: 'Dashboard' },
-  { key: 'profile', label: 'Profile' },
-  { key: 'settings', label: 'Settings' },
-  { key: 'logout', label: 'Logout' }
-] : [
-  { key: 'login', label: 'Login' },
-  { key: 'register', label: 'Register' }
-]
-
-// Handle scroll effect for header
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 10
-}
-
-// Toggle mobile menu
-const toggleMobileMenu = () => {
-  mobileMenuVisible.value = !mobileMenuVisible.value
-}
-
-// Handle account menu click
-const handleAccountClick = ({ key }) => {
-  if (key === 'logout') {
-    // Handle logout logic
-    window.location.href = '/logout'
-  } else if (key === 'login') {
-    window.location.href = '/login'
-  } else if (key === 'register') {
-    window.location.href = '/register'
-  } else {
-    window.location.href = `/${key}`
-  }
-}
 
 // Handle CTA clicks
 const handleGetStarted = () => {
@@ -80,165 +26,147 @@ const handleWatchDemo = () => {
   // Handle demo modal or navigation
   console.log('Watch demo clicked')
 }
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  return () => {
-    window.removeEventListener('scroll', handleScroll)
-  }
-})
 </script>
 
 <template>
-  <div class="relative">
-    <!-- Head for SEO -->
-    <Head title="Transform Your Digital Vision - BrandLogo" />
+  <!-- Main Hero Section -->
+  <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative pt-18">
+    <!-- Animated Grid Background -->
+    <div
+      class="absolute inset-0 z-0 opacity-40 grid-background"
+    ></div>
     
-    <!-- Improved Header -->
-    <header 
-      :class="[
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-xl shadow-lg' 
-          : 'bg-transparent'
-      ]"
-    >
-      <!-- Header Border (only visible when scrolled) -->
-      <div 
-        v-if="isScrolled"
-        class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"
-      ></div>
-      
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-18">
-          <!-- Logo -->
-          <div class="flex-shrink-0">
-            <Link href="/" class="block">
-              <h1 class="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent hover:scale-105 transition-all duration-300 tracking-tight">
-                BrandLogo
-              </h1>
-            </Link>
+    <!-- Floating Particles -->
+    <div class="absolute inset-0 z-0">
+      <div class="particle particle-1 absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"></div>
+      <div class="particle particle-2 absolute w-1 h-1 bg-purple-400 rounded-full opacity-70"></div>
+      <div class="particle particle-3 absolute w-3 h-3 bg-indigo-400 rounded-full opacity-50"></div>
+      <div class="particle particle-4 absolute w-2 h-2 bg-violet-400 rounded-full opacity-60"></div>
+      <div class="particle particle-5 absolute w-1 h-1 bg-blue-300 rounded-full opacity-80"></div>
+      <div class="particle particle-6 absolute w-2 h-2 bg-cyan-400 rounded-full opacity-50"></div>
+    </div>
+    
+    <!-- Background Blobs -->
+    <div class="absolute top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 morphing-blob opacity-15 blur-3xl"></div>
+    <div class="absolute bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400 via-pink-500 to-rose-500 morphing-blob opacity-10 blur-2xl morphing-blob-delay"></div>
+    <div class="absolute top-1/2 left-10 w-64 h-64 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 morphing-blob opacity-8 blur-xl morphing-blob-delay-2"></div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 pb-32">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8 lg:text-left text-center">
+          <!-- Badge -->
+          <div class="text-reveal stagger-1 inline-flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200/60 rounded-full shadow-md">
+            <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+            <span class="text-yellow-700 font-medium text-sm">Innovation Meets Excellence</span>
           </div>
-
-          <!-- Desktop Navigation -->
-          <div class="hidden lg:block">
-            <div class="flex items-center space-x-1">
-              <Link 
-                v-for="item in navItems" 
-                :key="item.label"
-                :href="item.href" 
-                :class="[
-                  'px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group',
-                  item.active 
-                    ? 'text-blue-600 bg-blue-50' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
-                ]"
-              >
-                {{ item.label }}
-                <span 
-                  v-if="!item.active"
-                  class="absolute inset-x-2 bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"
-                ></span>
-              </Link>
+          
+          <!-- Main Heading -->
+          <div class="space-y-4">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
+              <div class="text-reveal stagger-2 text-gray-900">
+                Bright Ideas,
+              </div>
+              <div class="text-reveal stagger-3">
+                <span class="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent animate-gradient-x">
+                  Brilliant Results
+                </span>
+              </div>
+            </h1>
+          </div>
+          
+          <!-- Subtitle -->
+          <div class="text-reveal stagger-4 space-y-6">
+            <p class="text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-lg lg:max-w-none mx-auto lg:mx-0">
+              We illuminate your path to success with creative solutions that spark growth and ignite possibilities.
+            </p>
+            
+            <!-- Feature Points -->
+            <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+              <div class="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="text-sm font-medium text-gray-700">Creative Excellence</span>
+              </div>
+              <div class="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span class="text-sm font-medium text-gray-700">Smart Solutions</span>
+              </div>
+              <div class="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200/50">
+                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span class="text-sm font-medium text-gray-700">Proven Impact</span>
+              </div>
             </div>
           </div>
-
-          <!-- Account Section -->
-          <div class="hidden lg:flex items-center space-x-4">
-            <Dropdown placement="bottomRight" :trigger="['click']">
-              <Button 
-                type="text" 
-                size="large"
-                class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 rounded-xl border border-transparent hover:border-blue-200 h-auto"
-              >
-                <UserOutlined class="text-lg" />
-                <span class="font-medium">{{ user ? user.name : 'Account' }}</span>
-                <DownOutlined class="text-xs" />
-              </Button>
-              <template #overlay>
-                <Menu 
-                  @click="handleAccountClick"
-                  class="min-w-48 rounded-xl shadow-2xl border-0 p-2 bg-white/95 backdrop-blur-xl"
-                >
-                  <MenuItem 
-                    v-for="item in accountMenuItems" 
-                    :key="item.key"
-                    class="rounded-lg hover:bg-blue-50 transition-colors duration-200 mb-1 last:mb-0"
-                  >
-                    <span class="font-medium text-gray-700 hover:text-blue-600">{{ item.label }}</span>
-                  </MenuItem>
-                </Menu>
-              </template>
-            </Dropdown>
-          </div>
-
-          <!-- Mobile menu button -->
-          <div class="lg:hidden">
-            <Button 
-              type="text" 
-              size="large"
-              @click="toggleMobileMenu"
-              class="hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 rounded-xl"
+          
+          <!-- CTA Buttons -->
+          <div class="text-reveal stagger-5 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+          <!-- Primary CTA Button -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+            <button
+              @click="handleGetStarted"
+              class="relative px-8 py-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10 group overflow-hidden"
             >
-              <MenuOutlined class="text-xl" />
-            </Button>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Mobile Navigation Drawer -->
-      <Drawer
-        v-model:open="mobileMenuVisible"
-        title="Navigation"
-        placement="right"
-        :width="320"
-        class="lg:hidden"
-        :body-style="{ padding: '24px' }"
-      >
-        <div class="flex flex-col space-y-6">
-          <!-- Navigation Links -->
-          <div class="space-y-2">
-            <Link 
-              v-for="item in navItems" 
-              :key="item.label"
-              :href="item.href" 
-              :class="[
-                'block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl',
-                item.active 
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-              ]"
-              @click="mobileMenuVisible = false"
-            >
-              {{ item.label }}
-            </Link>
+              <span class="relative z-10 flex items-center gap-3 text-lg">
+                <RocketOutlined class="text-xl group-hover:translate-x-1 transition-all duration-300" />
+                <span>Light Up Your Brand</span>
+              </span>
+            </button>
           </div>
           
-          <!-- Divider -->
-          <div class="border-t border-gray-200"></div>
-          
-          <!-- Account Actions -->
-          <div class="space-y-2">
-            <Button 
-              v-for="item in accountMenuItems" 
-              :key="item.key"
-              type="text" 
-              block 
-              size="large"
-              class="text-left justify-start hover:bg-blue-50 hover:text-blue-600 rounded-xl h-auto py-3 font-medium"
-              @click="() => { handleAccountClick({ key: item.key }); mobileMenuVisible = false }"
-            >
-              {{ item.label }}
-            </Button>
+          <!-- Secondary CTA Button -->
+          <button
+            @click="handleWatchDemo"
+            class="px-8 py-4 bg-white/90 backdrop-blur-xl text-gray-800 font-bold rounded-2xl border border-gray-200/50 hover:border-orange-300/50 transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+          >
+            <span class="flex items-center gap-3 text-lg group-hover:text-orange-700 transition-colors duration-300">
+              <PlayCircleOutlined class="text-xl" />
+              <span>See Our Work</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Side - Animated Bulb -->
+      <div class="hidden lg:flex items-center justify-center">
+        <div class="relative">
+          <!-- Main Bulb Container -->
+          <div class="bulb-container">
+            <!-- Bulb Base -->
+            <div class="bulb-base"></div>
+            
+            <!-- Bulb Glass -->
+            <div class="bulb-glass">
+              <!-- Inner Glow -->
+              <div class="bulb-glow"></div>
+              <!-- Filament -->
+              <div class="bulb-filament"></div>
+            </div>
+            
+            <!-- Light Rays -->
+            <div class="light-rays">
+              <div class="ray ray-1"></div>
+              <div class="ray ray-2"></div>
+              <div class="ray ray-3"></div>
+              <div class="ray ray-4"></div>
+              <div class="ray ray-5"></div>
+              <div class="ray ray-6"></div>
+            </div>
+            
+            <!-- Floating Sparkles -->
+            <div class="sparkles">
+              <div class="sparkle sparkle-1"></div>
+              <div class="sparkle sparkle-2"></div>
+              <div class="sparkle sparkle-3"></div>
+              <div class="sparkle sparkle-4"></div>
+              <div class="sparkle sparkle-5"></div>
+            </div>
           </div>
         </div>
-      </Drawer>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="pt-18">
-      <slot />
-    </main>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 

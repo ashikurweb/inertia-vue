@@ -1,12 +1,11 @@
 <script setup>
 import GuestLayout from '../Layouts/GuestLayout.vue';
+import HeroSection from '../Components/HeroSection.vue';
 </script>
 
 <template>
     <GuestLayout>
-        <Head title="Home"></Head>
-        <div> 
-            <h1>{{ $page.props.user }}</h1>
-        </div>
+        <Head title="Home" />
+        <HeroSection />
     </GuestLayout>
 </template>
