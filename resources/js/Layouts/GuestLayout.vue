@@ -5,12 +5,8 @@ import {
   MenuOutlined, 
   UserOutlined, 
   DownOutlined,
-  PlayCircleOutlined,
-  RocketOutlined,
-  StarOutlined,
-  ThunderboltOutlined
 } from '@ant-design/icons-vue'
-import { Button, Dropdown, Menu, MenuItem, Drawer } from 'ant-design-vue'
+import { Button, Drawer } from 'ant-design-vue'
 
 // Props
 const props = defineProps({
@@ -23,6 +19,7 @@ const props = defineProps({
 // Reactive state
 const mobileMenuVisible = ref(false)
 const isScrolled = ref(false)
+const userDropdownOpen = ref(false)
 
 // Navigation items
 const navItems = [
@@ -34,13 +31,13 @@ const navItems = [
 
 // Account dropdown menu items
 const accountMenuItems = props.user ? [
-  { key: 'dashboard', label: 'Dashboard' },
-  { key: 'profile', label: 'Profile' },
-  { key: 'settings', label: 'Settings' },
-  { key: 'logout', label: 'Logout' }
+  { key: 'dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
+  { key: 'profile', label: 'Profile', icon: 'fas fa-user' },
+  { key: 'settings', label: 'Settings', icon: 'fas fa-cog' },
+  { key: 'logout', label: 'Logout', icon: 'fas fa-sign-out-alt' }
 ] : [
-  { key: 'login', label: 'Login' },
-  { key: 'register', label: 'Register' }
+  { key: 'login', label: 'Login', icon: 'fas fa-sign-in-alt' },
+  { key: 'register', label: 'Register', icon: 'fas fa-user-plus' }
 ]
 
 // Handle scroll effect for header
@@ -53,8 +50,18 @@ const toggleMobileMenu = () => {
   mobileMenuVisible.value = !mobileMenuVisible.value
 }
 
+// Toggle user dropdown
+const toggleUserDropdown = () => {
+  userDropdownOpen.value = !userDropdownOpen.value
+}
+
+// Close dropdown when clicking outside
+const closeUserDropdown = () => {
+  userDropdownOpen.value = false
+}
+
 // Handle account menu click
-const handleAccountClick = ({ key }) => {
+const handleAccountClick = (key) => {
   if (key === 'logout') {
     // Handle logout logic
     window.location.href = '/logout'
@@ -65,6 +72,7 @@ const handleAccountClick = ({ key }) => {
   } else {
     window.location.href = `/${key}`
   }
+  userDropdownOpen.value = false
 }
 
 // Handle CTA clicks
@@ -83,8 +91,19 @@ const handleWatchDemo = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  
+  // Add click outside listener for dropdown
+  const handleClickOutside = (event) => {
+    if (userDropdownOpen.value && !event.target.closest('.user-dropdown-container')) {
+      closeUserDropdown()
+    }
+  }
+  
+  document.addEventListener('click', handleClickOutside)
+  
   return () => {
     window.removeEventListener('scroll', handleScroll)
+    document.removeEventListener('click', handleClickOutside)
   }
 })
 </script>
@@ -99,7 +118,7 @@ onMounted(() => {
       :class="[
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
         isScrolled 
-          ? 'bg-white/90 backdrop-blur-xl shadow-lg' 
+          ? 'backdrop-blur-2xl shadow-lg' 
           : 'bg-transparent'
       ]"
     >
@@ -143,33 +162,54 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Account Section -->
+          <!-- Custom Account Section -->
           <div class="hidden lg:flex items-center space-x-4">
-            <Dropdown placement="bottomRight" :trigger="['click']">
-              <Button 
-                type="text" 
-                size="large"
-                class="flex items-center space-x-2 px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 rounded-xl border border-transparent hover:border-blue-200 h-auto"
+            <div class="relative user-dropdown-container">
+              <button 
+                @click="toggleUserDropdown"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200/60 text-gray-700 hover:border-blue-500 hover:text-blue-600 font-medium transition-all duration-300"
               >
-                <UserOutlined class="text-lg" />
-                <span class="font-medium">{{ user ? user.name : 'Account' }}</span>
-                <DownOutlined class="text-xs" />
-              </Button>
-              <template #overlay>
-                <Menu 
-                  @click="handleAccountClick"
-                  class="min-w-48 rounded-xl shadow-2xl border-0 p-2 bg-white/95 backdrop-blur-xl"
+                <div class="w-8 h-8 border border-gray-200 rounded-full flex items-center justify-center">
+                  <i class="fas fa-user text-gray-600"></i>
+                </div>
+                <span>{{ user ? user.name : 'My Account' }}</span>
+                <svg 
+                  class="w-4 h-4 transition-transform duration-200" 
+                  :class="{ 'rotate-180': userDropdownOpen }" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
                 >
-                  <MenuItem 
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              
+              <!-- Custom Account Dropdown Menu -->
+              <transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0 scale-95 translate-y-2"
+                enter-to-class="opacity-100 scale-100 translate-y-0"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100 scale-100 translate-y-0"
+                leave-to-class="opacity-0 scale-95 translate-y-2"
+              >
+                <div 
+                  v-show="userDropdownOpen" 
+                  class="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2"
+                >
+                  <a 
                     v-for="item in accountMenuItems" 
                     :key="item.key"
-                    class="rounded-lg hover:bg-blue-50 transition-colors duration-200 mb-1 last:mb-0"
+                    href="#"
+                    @click.prevent="handleAccountClick(item.key)"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
                   >
-                    <span class="font-medium text-gray-700 hover:text-blue-600">{{ item.label }}</span>
-                  </MenuItem>
-                </Menu>
-              </template>
-            </Dropdown>
+                    <i :class="[item.icon, 'w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors']"></i>
+                    {{ item.label }}
+                  </a>
+                </div>
+              </transition>
+            </div>
           </div>
 
           <!-- Mobile menu button -->
@@ -217,19 +257,18 @@ onMounted(() => {
           <!-- Divider -->
           <div class="border-t border-gray-200"></div>
           
-          <!-- Account Actions -->
+          <!-- Mobile Account Actions -->
           <div class="space-y-2">
-            <Button 
+            <button 
               v-for="item in accountMenuItems" 
               :key="item.key"
-              type="text" 
-              block 
-              size="large"
-              class="text-left justify-start hover:bg-blue-50 hover:text-blue-600 rounded-xl h-auto py-3 font-medium"
-              @click="() => { handleAccountClick({ key: item.key }); mobileMenuVisible = false }"
+              type="button"
+              class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:border-l-4 hover:border-l-blue-500 hover:text-blue-600 font-medium transition-colors"
+              @click="() => { handleAccountClick(item.key); mobileMenuVisible = false }"
             >
+              <i :class="[item.icon, 'w-5 h-5']"></i>
               {{ item.label }}
-            </Button>
+            </button>
           </div>
         </div>
       </Drawer>
