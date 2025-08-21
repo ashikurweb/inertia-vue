@@ -8,6 +8,8 @@ import { createApp, h } from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3'
 import { Icon } from "@iconify/vue";
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import Antd from 'ant-design-vue'; // 
+// import 'ant-design-vue/dist/antd.css'; 
 
 createInertiaApp({
   title: (title) => `My App | ${title}`,
@@ -19,6 +21,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue, Ziggy)
+      .use(Antd)
       .component('Icon', Icon)
       .component('Link', Link)
       .component('Head', Head)
