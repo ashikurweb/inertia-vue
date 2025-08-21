@@ -1,11 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { 
-  MenuOutlined, 
-  UserOutlined, 
-  DownOutlined,
-} from '@ant-design/icons-vue'
+import { MenuOutlined } from '@ant-design/icons-vue'
 import { Button, Drawer } from 'ant-design-vue'
 
 // Props
@@ -21,24 +17,9 @@ const mobileMenuVisible = ref(false)
 const isScrolled = ref(false)
 const userDropdownOpen = ref(false)
 
-// Navigation items
-const navItems = [
-  { label: 'Home', href: '/', active: true },
-  { label: 'Blog', href: '/blog' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' }
-]
 
-// Account dropdown menu items
-const accountMenuItems = props.user ? [
-  { key: 'dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
-  { key: 'profile', label: 'Profile', icon: 'fas fa-user' },
-  { key: 'settings', label: 'Settings', icon: 'fas fa-cog' },
-  { key: 'logout', label: 'Logout', icon: 'fas fa-sign-out-alt' }
-] : [
-  { key: 'login', label: 'Login', icon: 'fas fa-sign-in-alt' },
-  { key: 'register', label: 'Register', icon: 'fas fa-user-plus' }
-]
+
+
 
 // Handle scroll effect for header
 const handleScroll = () => {
@@ -58,35 +39,6 @@ const toggleUserDropdown = () => {
 // Close dropdown when clicking outside
 const closeUserDropdown = () => {
   userDropdownOpen.value = false
-}
-
-// Handle account menu click
-const handleAccountClick = (key) => {
-  if (key === 'logout') {
-    // Handle logout logic
-    window.location.href = '/logout'
-  } else if (key === 'login') {
-    window.location.href = '/login'
-  } else if (key === 'register') {
-    window.location.href = '/register'
-  } else {
-    window.location.href = `/${key}`
-  }
-  userDropdownOpen.value = false
-}
-
-// Handle CTA clicks
-const handleGetStarted = () => {
-  if (props.user) {
-    window.location.href = '/dashboard'
-  } else {
-    window.location.href = '/register'
-  }
-}
-
-const handleWatchDemo = () => {
-  // Handle demo modal or navigation
-  console.log('Watch demo clicked')
 }
 
 onMounted(() => {
@@ -143,21 +95,31 @@ onMounted(() => {
           <div class="hidden lg:block">
             <div class="flex items-center space-x-1">
               <Link 
-                v-for="item in navItems" 
-                :key="item.label"
-                :href="item.href" 
-                :class="[
-                  'px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group',
-                  item.active 
-                    ? 'text-blue-600 bg-blue-50' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
-                ]"
+                href="/" 
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group text-blue-600 bg-blue-50"
               >
-                {{ item.label }}
-                <span 
-                  v-if="!item.active"
-                  class="absolute inset-x-2 bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"
-                ></span>
+                Home
+              </Link>
+              <Link 
+                href="/blog" 
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+              >
+                Blog
+                <span class="absolute inset-x-2 bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></span>
+              </Link>
+              <Link 
+                href="/about" 
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+              >
+                About
+                <span class="absolute inset-x-2 bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></span>
+              </Link>
+              <Link 
+                href="/contact" 
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 rounded-xl relative group text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+              >
+                Contact
+                <span class="absolute inset-x-2 bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></span>
               </Link>
             </div>
           </div>
@@ -172,7 +134,7 @@ onMounted(() => {
                 <div class="w-8 h-8 border border-gray-200 rounded-full flex items-center justify-center">
                   <i class="fas fa-user text-gray-600"></i>
                 </div>
-                <span>{{ user ? user.name : 'My Account' }}</span>
+                <span>My Account</span>
                 <svg 
                   class="w-4 h-4 transition-transform duration-200" 
                   :class="{ 'rotate-180': userDropdownOpen }" 
@@ -197,16 +159,22 @@ onMounted(() => {
                   v-show="userDropdownOpen" 
                   class="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2"
                 >
-                  <a 
-                    v-for="item in accountMenuItems" 
-                    :key="item.key"
-                    href="#"
-                    @click.prevent="handleAccountClick(item.key)"
+                  <Link 
+                    :href="route('login')"
+                    @click="userDropdownOpen = false"
                     class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
                   >
-                    <i :class="[item.icon, 'w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors']"></i>
-                    {{ item.label }}
-                  </a>
+                    <i class="fas fa-sign-in-alt w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    Login
+                  </Link>
+                  <Link 
+                    :href="route('register')"
+                    @click="userDropdownOpen = false"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
+                  >
+                    <i class="fas fa-user-plus w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    Register
+                  </Link>
                 </div>
               </transition>
             </div>
@@ -239,18 +207,32 @@ onMounted(() => {
           <!-- Navigation Links -->
           <div class="space-y-2">
             <Link 
-              v-for="item in navItems" 
-              :key="item.label"
-              :href="item.href" 
-              :class="[
-                'block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl',
-                item.active 
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-              ]"
+              href="/" 
+              class="block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl text-blue-600 bg-blue-50"
               @click="mobileMenuVisible = false"
             >
-              {{ item.label }}
+              Home
+            </Link>
+            <Link 
+              href="/blog" 
+              class="block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+              @click="mobileMenuVisible = false"
+            >
+              Blog
+            </Link>
+            <Link 
+              href="/about" 
+              class="block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+              @click="mobileMenuVisible = false"
+            >
+              About
+            </Link>
+            <Link 
+              href="/contact" 
+              class="block px-4 py-3 text-lg font-medium transition-all duration-300 rounded-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+              @click="mobileMenuVisible = false"
+            >
+              Contact
             </Link>
           </div>
           
@@ -259,16 +241,22 @@ onMounted(() => {
           
           <!-- Mobile Account Actions -->
           <div class="space-y-2">
-            <button 
-              v-for="item in accountMenuItems" 
-              :key="item.key"
-              type="button"
+            <Link 
+              :href="route('login')"
               class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:border-l-4 hover:border-l-blue-500 hover:text-blue-600 font-medium transition-colors"
-              @click="() => { handleAccountClick(item.key); mobileMenuVisible = false }"
+              @click="mobileMenuVisible = false"
             >
-              <i :class="[item.icon, 'w-5 h-5']"></i>
-              {{ item.label }}
-            </button>
+              <i class="fas fa-sign-in-alt w-5 h-5"></i>
+              Login
+            </Link>
+            <Link 
+              :href="route('register')"
+              class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:border-l-4 hover:border-l-blue-500 hover:text-blue-600 font-medium transition-colors"
+              @click="mobileMenuVisible = false"
+            >
+              <i class="fas fa-user-plus w-5 h-5"></i>
+              Register
+            </Link>
           </div>
         </div>
       </Drawer>
