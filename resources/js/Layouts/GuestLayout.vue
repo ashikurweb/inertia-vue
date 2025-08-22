@@ -61,7 +61,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative">
+    <!-- Animated Grid Background -->
+    <div class="absolute inset-0 z-0 opacity-40 grid-background"></div>
+    
+    <!-- Floating Particles -->
+    <div class="absolute inset-0 z-0">
+      <div class="particle particle-1 absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"></div>
+      <div class="particle particle-2 absolute w-1 h-1 bg-purple-400 rounded-full opacity-70"></div>
+      <div class="particle particle-3 absolute w-3 h-3 bg-indigo-400 rounded-full opacity-50"></div>
+      <div class="particle particle-4 absolute w-2 h-2 bg-violet-400 rounded-full opacity-60"></div>
+      <div class="particle particle-5 absolute w-1 h-1 bg-blue-300 rounded-full opacity-80"></div>
+      <div class="particle particle-6 absolute w-2 h-2 bg-cyan-400 rounded-full opacity-50"></div>
+    </div>
+    
+    <!-- Background Blobs -->
+    <div class="absolute top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 morphing-blob opacity-15 blur-3xl"></div>
+    <div class="absolute bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400 via-pink-500 to-rose-500 morphing-blob opacity-10 blur-2xl morphing-blob-delay"></div>
+    <div class="absolute top-1/2 left-10 w-64 h-64 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 morphing-blob opacity-8 blur-xl morphing-blob-delay-2"></div>
     <!-- Head for SEO -->
     <Head title="Transform Your Digital Vision - BrandLogo" />
     
@@ -70,7 +87,7 @@ onMounted(() => {
       :class="[
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
         isScrolled 
-          ? 'backdrop-blur-2xl shadow-lg' 
+          ? 'backdrop-blur-2xl bg-white/80 shadow-lg' 
           : 'bg-transparent'
       ]"
     >
@@ -263,7 +280,7 @@ onMounted(() => {
     </header>
 
     <!-- Main Content Area -->
-    <main class="pt-18">
+    <main class="pt-18 relative z-10">
       <slot />
     </main>
   </div>
