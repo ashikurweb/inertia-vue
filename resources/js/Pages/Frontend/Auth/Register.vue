@@ -21,7 +21,7 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
 const submit = () => {
-  form.post(route('register'), {
+  form.post(route('register.store'), {
     onFinish: () => form.reset('password', 'password_confirmation')
   })
 }
