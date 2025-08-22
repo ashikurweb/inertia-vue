@@ -2,8 +2,9 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/Form/InputError.vue'
 import {useForm} from '@inertiajs/vue3'
-import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
-import {Button, Form, FormItem, Input} from 'ant-design-vue'
+import { ref } from 'vue'
+import {LockOutlined, UserOutlined, EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons-vue'
+import {Button, Form, FormItem, Input, Space} from 'ant-design-vue'
 
 defineProps({
   status: String
@@ -16,9 +17,12 @@ const form = useForm({
   password_confirmation: '',
 })
 
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
+
 const submit = () => {
   form.post(route('register'), {
-    onFinish: () => form.reset('password')
+    onFinish: () => form.reset('password', 'password_confirmation')
   })
 }
 </script>
@@ -87,7 +91,7 @@ const submit = () => {
         <Input
             size="large"
             id="password"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             v-model:value="form.password"
             autocomplete="current-password"
             placeholder="Password"
@@ -95,6 +99,12 @@ const submit = () => {
         >
           <template #prefix>
             <LockOutlined class="opacity-30"/>
+          </template>
+          <template #suffix>
+            <span @click="showPassword = !showPassword" class="cursor-pointer">
+              <EyeOutlined v-if="!showPassword" class="opacity-60 hover:opacity-100" />
+              <EyeInvisibleOutlined v-else class="opacity-60 hover:opacity-100" />
+            </span>
           </template>
         </Input>
         <InputError class="text-left pt-1" :message="form.errors.password"/>
@@ -104,7 +114,7 @@ const submit = () => {
         <Input
             size="large"
             id="password_confirmation"
-            type="password"
+            :type="showConfirmPassword ? 'text' : 'password'"
             v-model:value="form.password_confirmation"
             autocomplete="new-password"
             placeholder="Confirm Password"
@@ -112,6 +122,12 @@ const submit = () => {
         >
           <template #prefix>
             <LockOutlined class="opacity-30"/>
+          </template>
+          <template #suffix>
+            <span @click="showConfirmPassword = !showConfirmPassword" class="cursor-pointer">
+              <EyeOutlined v-if="!showConfirmPassword" class="opacity-60 hover:opacity-100" />
+              <EyeInvisibleOutlined v-else class="opacity-60 hover:opacity-100" />
+            </span>
           </template>
         </Input>
         <InputError class="text-left pt-1" :message="form.errors.password_confirmation"/>
@@ -130,9 +146,9 @@ const submit = () => {
 
         <div class="mt-6 text-center text-sm">
           <span class="text-gray-600">Already have an account?</span>
-          <a href="#" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
+          <Link :href="route('login')" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
             Sign in
-          </a>
+          </Link>
         </div>
       </div>
     </div>

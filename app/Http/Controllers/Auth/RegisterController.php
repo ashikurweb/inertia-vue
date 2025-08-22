@@ -12,4 +12,9 @@ class RegisterController extends Controller
     {
         return Inertia::render('Frontend/Auth/Register');
     }
+
+    public function store( Request $request)
+    {
+        dd($request->all());
+    }
 }
