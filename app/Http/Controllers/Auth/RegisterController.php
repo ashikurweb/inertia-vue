@@ -20,7 +20,7 @@ class RegisterController extends Controller
         $validate = $request->validated();
         $user = $this->createUser($validate);
         $this->loginUser($user);
-        return redirect()->route('home', ['message' => 'User registered successfully']);
+        return redirect()->route('home')->with('success', 'Account created successfully! Welcome aboard! 🎉');
     }
 
     private function createUser(array $validate)

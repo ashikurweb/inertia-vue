@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { MenuOutlined } from '@ant-design/icons-vue'
 import { Button, Drawer } from 'ant-design-vue'
+import NotificationContainer from '../Components/NotificationContainer.vue'
 
 // Props
 const props = defineProps({
@@ -284,6 +285,7 @@ onMounted(() => {
       <slot />
     </main>
   </div>
+  <NotificationContainer />
 </template>
 
 <style scoped>
