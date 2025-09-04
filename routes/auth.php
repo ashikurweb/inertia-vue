@@ -12,3 +12,6 @@ Route::middleware('guest', 'delay:1')->group(function () {
     Route::post('register', [RegisterController::class, 'store'])->name('register.store');
 });
     
+Route::middleware('auth')->group(function () {
+    Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
+});

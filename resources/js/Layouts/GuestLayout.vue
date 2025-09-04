@@ -1,26 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { MenuOutlined } from '@ant-design/icons-vue'
 import { Button, Drawer } from 'ant-design-vue'
 import NotificationContainer from '../Components/NotificationContainer.vue'
 
 // Props
-const props = defineProps({
-  user: {
-    type: Object,
-    default: null
-  }
-})
+const page = usePage()
 
 // Reactive state
 const mobileMenuVisible = ref(false)
 const isScrolled = ref(false)
 const userDropdownOpen = ref(false)
-
-
-
-
 
 // Handle scroll effect for header
 const handleScroll = () => {
@@ -40,6 +31,12 @@ const toggleUserDropdown = () => {
 // Close dropdown when clicking outside
 const closeUserDropdown = () => {
   userDropdownOpen.value = false
+}
+
+// Handle logout
+const handleLogout = () => {
+  userDropdownOpen.value = false
+  router.post(route('logout'))
 }
 
 onMounted(() => {
@@ -80,6 +77,7 @@ onMounted(() => {
     <div class="absolute top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 morphing-blob opacity-15 blur-3xl"></div>
     <div class="absolute bottom-20 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400 via-pink-500 to-rose-500 morphing-blob opacity-10 blur-2xl morphing-blob-delay"></div>
     <div class="absolute top-1/2 left-10 w-64 h-64 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 morphing-blob opacity-8 blur-xl morphing-blob-delay-2"></div>
+    
     <!-- Head for SEO -->
     <Head title="Transform Your Digital Vision - BrandLogo" />
     
@@ -104,7 +102,7 @@ onMounted(() => {
           <div class="flex-shrink-0">
             <Link href="/" class="block">
               <h1 class="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent hover:scale-105 transition-all duration-300 tracking-tight">
-                BrandLogo
+                FunnyDev 
               </h1>
             </Link>
           </div>
@@ -152,7 +150,7 @@ onMounted(() => {
                 <div class="w-8 h-8 border border-gray-200 rounded-full flex items-center justify-center">
                   <i class="fas fa-user text-gray-600"></i>
                 </div>
-                <span>My Account</span>
+                <span>{{ page.props.auth.user ? page.props.auth.user.name : 'My Account' }}</span>
                 <svg 
                   class="w-4 h-4 transition-transform duration-200" 
                   :class="{ 'rotate-180': userDropdownOpen }" 
@@ -177,22 +175,54 @@ onMounted(() => {
                   v-show="userDropdownOpen" 
                   class="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2"
                 >
-                  <Link 
-                    :href="route('login')"
-                    @click="userDropdownOpen = false"
-                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
-                  >
-                    <i class="fas fa-sign-in-alt w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    Login
-                  </Link>
-                  <Link 
-                    :href="route('register')"
-                    @click="userDropdownOpen = false"
-                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
-                  >
-                    <i class="fas fa-user-plus w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    Register
-                  </Link>
+                  <!-- If user is authenticated -->
+                  <template v-if="page.props.auth.user">
+                    <Link 
+                      href="#"
+                      @click="userDropdownOpen = false"
+                      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-500 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
+                    >
+                      <i class="fas fa-tachometer-alt w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                      Dashboard
+                    </Link>
+                    <Link 
+                      href="#"
+                      @click="userDropdownOpen = false"
+                      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-500 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
+                    >
+                      <i class="fas fa-user-cog w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                      Profile
+                    </Link>
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <Link 
+                      :href="route('logout')"
+                      @click="userDropdownOpen = false"
+                      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-red-500 hover:bg-red-100/80 transition-colors group rounded-lg mx-2"
+                    >
+                      <i class="fas fa-sign-out-alt w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors"></i>
+                      Logout
+                    </Link>
+                  </template>
+                  
+                  <!-- If user is not authenticated -->
+                  <template v-else>
+                    <Link 
+                      :href="route('login')"
+                      @click="userDropdownOpen = false"
+                      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
+                    >
+                      <i class="fas fa-sign-in-alt w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                      Login
+                    </Link>
+                    <Link 
+                      :href="route('register')"
+                      @click="userDropdownOpen = false"
+                      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
+                    >
+                      <i class="fas fa-user-plus w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                      Register
+                    </Link>
+                  </template>
                 </div>
               </transition>
             </div>
@@ -259,22 +289,54 @@ onMounted(() => {
           
           <!-- Mobile Account Actions -->
           <div class="space-y-2">
-            <Link 
-              :href="route('login')"
-              class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:border-l-4 hover:border-l-blue-500 hover:text-blue-600 font-medium transition-colors"
-              @click="mobileMenuVisible = false"
-            >
-              <i class="fas fa-sign-in-alt w-5 h-5"></i>
-              Login
-            </Link>
-            <Link 
-              :href="route('register')"
-              class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:border-l-4 hover:border-l-blue-500 hover:text-blue-600 font-medium transition-colors"
-              @click="mobileMenuVisible = false"
-            >
-              <i class="fas fa-user-plus w-5 h-5"></i>
-              Register
-            </Link>
+            <!-- If user is authenticated -->
+            <template v-if="page.props.auth.user">
+              <Link 
+                href="#"
+                class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                @click="mobileMenuVisible = false"
+              >
+                <i class="fas fa-tachometer-alt w-5 h-5"></i>
+                Dashboard
+              </Link>
+              <Link 
+                href="#"
+                class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                @click="mobileMenuVisible = false"
+              >
+                <i class="fas fa-user-cog w-5 h-5"></i>
+                Profile
+              </Link>
+              <Link 
+                method="post"
+                as="button"
+                class="w-[150px] text-left flex items-center gap-2 px-4 py-3 font-medium text-red-500 cursor-pointer hover:text-rose-700  transition-colors"
+                @click="mobileMenuVisible = false"
+              >
+                <i class="fas fa-sign-out-alt w-5 h-5 -mb-2"></i>
+                Logout
+              </Link>
+            </template>
+            
+            <!-- If user is not authenticated -->
+            <template v-else>
+              <Link 
+                :href="route('login')"
+                class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-medium transition-colors rounded-lg"
+                @click="mobileMenuVisible = false"
+              >
+                <i class="fas fa-sign-in-alt w-5 h-5"></i>
+                Login
+              </Link>
+              <Link 
+                :href="route('register')"
+                class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-medium transition-colors rounded-lg"
+                @click="mobileMenuVisible = false"
+              >
+                <i class="fas fa-user-plus w-5 h-5"></i>
+                Register
+              </Link>
+            </template>
           </div>
         </div>
       </Drawer>
