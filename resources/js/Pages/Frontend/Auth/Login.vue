@@ -1,10 +1,11 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/Form/InputError.vue'
-import {Head, Link, useForm} from '@inertiajs/vue3'
+import {useForm} from '@inertiajs/vue3'
 import { ref } from 'vue'
 import {LockOutlined, UserOutlined, EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons-vue'
 import {Button, Form, FormItem, Input, Checkbox} from 'ant-design-vue'
+import {useNotifications} from '@/Composable/useNotifications'
 
 defineProps({
   canResetPassword: Boolean,
@@ -19,9 +20,30 @@ const form = useForm({
 
 const showPassword = ref(false)
 
+const {handleFormProcessing} = useNotifications()
+
+// Apply notification handling to form
+handleFormProcessing(
+  form,
+  'Logging in...', // Processing message
+  null, // Success message (will use controller message)
+  'Failed to log in' // Error fallback message
+)
+
 const submit = () => {
-  form.post(route('login'), {
-    onFinish: () => form.reset('password')
+  // Convert remember to string before submission
+  const formData = {
+    ...form,
+    remember: form.remember ? '1' : '0'
+  }
+  
+  form.transform((data) => ({
+    ...data,
+    remember: data.remember ? '1' : '0'
+  })).post(route('login'), {
+    onFinish: () => {
+      form.reset('password')
+    }
   })
 }
 </script>
