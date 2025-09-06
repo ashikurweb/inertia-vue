@@ -8,7 +8,6 @@ import {Button, Form, FormItem, Input, Checkbox} from 'ant-design-vue'
 import {useNotifications} from '@/Composable/useNotifications'
 
 defineProps({
-  canResetPassword: Boolean,
   status: String
 })
 
