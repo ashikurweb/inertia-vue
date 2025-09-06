@@ -178,7 +178,7 @@ onMounted(() => {
                   <!-- If user is authenticated -->
                   <template v-if="page.props.auth.user">
                     <Link 
-                      href="#"
+                      :href="route('dashboard')"
                       @click="userDropdownOpen = false"
                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-500 hover:bg-blue-50/80 transition-colors group rounded-lg mx-2"
                     >
@@ -292,7 +292,7 @@ onMounted(() => {
             <!-- If user is authenticated -->
             <template v-if="page.props.auth.user">
               <Link 
-                href="#"
+                :href="route('dashboard')"
                 class="w-full text-left flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 font-medium transition-colors"
                 @click="mobileMenuVisible = false"
               >
