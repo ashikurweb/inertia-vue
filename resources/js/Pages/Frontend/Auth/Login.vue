@@ -24,9 +24,9 @@ const {handleFormProcessing} = useNotifications()
 // Apply notification handling to form
 handleFormProcessing(
   form,
-  'Logging in...', // Processing message
-  null, // Success message (will use controller message)
-  'Failed to log in' // Error fallback message
+  'Processing your login...', 
+  null, 
+  'Failed to log in' 
 )
 
 const submit = () => {
@@ -116,7 +116,7 @@ const submit = () => {
         <Checkbox name="remember" v-model:checked="form.remember"
         >Remember me
         </Checkbox>
-        <Link href="#">
+        <Link :href="route('forgot')">
           <Button type="link"  class="text-primary">
             Forgot your password?
           </Button>
