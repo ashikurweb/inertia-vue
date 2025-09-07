@@ -1,7 +1,7 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/Form/InputError.vue'
-import { useForm, Head, Link } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import { LockOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import { Button, Form, FormItem, Input } from 'ant-design-vue'
@@ -34,7 +34,7 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
 const submit = () => {
-  form.post(route('password.store'), {
+form.post(route('reset.password.update', form.token), {
     onFinish: () => form.reset('password', 'password_confirmation'),
   })
 }
@@ -73,7 +73,6 @@ const submit = () => {
           <Form layout="vertical" @submit.prevent="submit" size="lg">
             <FormItem 
               label="New Password"
-              :help="form.errors.password ? '' : 'Password must be at least 8 characters long'"
             >
               <Input
                 size="large"
@@ -83,7 +82,6 @@ const submit = () => {
                 autocomplete="new-password"
                 placeholder="Enter new password"
                 :status="form.errors.password ? 'error' : ''"
-                required
               >
                 <template #prefix>
                   <LockOutlined class="opacity-30"/>
@@ -98,10 +96,7 @@ const submit = () => {
               <InputError class="text-left pt-1" :message="form.errors.password"/>
             </FormItem>
 
-            <FormItem 
-              label="Confirm New Password"
-              :help="form.errors.password_confirmation ? '' : 'Please confirm your new password'"
-            >
+            <FormItem label="Confirm New Password">
               <Input
                 size="large"
                 id="password_confirmation"
@@ -110,7 +105,6 @@ const submit = () => {
                 autocomplete="new-password"
                 placeholder="Confirm new password"
                 :status="form.errors.password_confirmation ? 'error' : ''"
-                required
               >
                 <template #prefix>
                   <LockOutlined class="opacity-30"/>
@@ -135,15 +129,6 @@ const submit = () => {
             >
               {{ form.processing ? 'Resetting Password...' : 'Reset Password' }}
             </Button>
-
-            <div class="text-center">
-              <Link 
-                :href="route('login')" 
-                class="text-sm text-blue-600 hover:text-blue-800 font-medium"
-              >
-                ← Back to Login
-              </Link>
-            </div>
           </Form>
         </div>
       </div>

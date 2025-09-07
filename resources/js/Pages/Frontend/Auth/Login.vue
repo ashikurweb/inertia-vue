@@ -25,7 +25,7 @@ const {handleFormProcessing} = useNotifications()
 handleFormProcessing(
   form,
   'Processing your login...', 
-  null, 
+  'Logged in successfully!', 
   'Failed to log in' 
 )
 
@@ -125,12 +125,13 @@ const submit = () => {
 
       <Button
           :loading="form.processing"
+          :disabled="form.processing"
           htmlType="submit"
           type="primary"
           class="w-full"
           size="large"
       >
-        Log in
+        {{ form.processing ? 'Logging in...' : 'Log In' }}
           </Button>
         </Form>
 

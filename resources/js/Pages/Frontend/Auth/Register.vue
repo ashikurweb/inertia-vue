@@ -24,7 +24,7 @@ const { handleFormProcessing } = useNotifications()
 handleFormProcessing(
   form, 
   'Creating your account...', // Processing message
-  null, // Success message (will use controller message)
+  'Account has been created successfully!', // Success message
   'Failed to create account' // Error fallback message
 )
 
@@ -33,7 +33,7 @@ const showConfirmPassword = ref(false)
 
 const submit = () => {
   form.post(route('register.store'), {
-    onFinish: () => form.reset('password', 'password_confirmation')
+    onFinish: () => form.reset('password', 'password_confirmation'),
   })
 }
 </script>

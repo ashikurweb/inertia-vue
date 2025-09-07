@@ -21,7 +21,7 @@ const {handleFormProcessing} = useNotifications()
 handleFormProcessing(
   form,
   'Processing your password reset...', 
-  null, 
+  'Reset link has been sent to your email!', 
   'Failed to send reset link.', 
 )
 
@@ -78,12 +78,13 @@ const submit = () => {
 
       <Button
           :loading="form.processing"
+          :disabled="form.processing"
           htmlType="submit"
           type="primary"
           class="w-full"
           size="large"
       >
-        Send Reset Link
+        {{ form.processing ? 'Sending...' : 'Send Reset Link' }}
           </Button>
         </Form>
 
